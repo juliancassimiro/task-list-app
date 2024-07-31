@@ -1,0 +1,17 @@
+.task-list {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+  }
+  
+  .task-card {
+    width: 300px;
+    margin: 10px;
+
+  }
+
+
+  .spacer {
+    flex: 1 1 auto;
+  }
+  
