@@ -32,6 +32,23 @@ export class TaskDetailComponent implements OnInit {
     'Concluída': Status.DONE
   };
 
+  priorityMap: { [key in Priority]: string } = {
+    [Priority.LOW]: 'Baixa',
+    [Priority.MEDIUM]: 'Média',
+    [Priority.HIGH]: 'Alta',
+    [Priority.URGENT]: 'Urgente'
+  };
+
+  statusMap: { [key in Status]: string } = {
+    [Status.TODO]: 'A fazer',
+    [Status.DOING]: 'Em progresso',
+    [Status.DONE]: 'Concluída'
+  };
+
+
+  // priorities = Object.values(Priority);
+  // statuses = Object.values(Status);
+
  
   constructor(
     private route: ActivatedRoute,
@@ -40,19 +57,16 @@ export class TaskDetailComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    const id = this.route.snapshot.paramMap.get('id');
-    if (id) {
+    const taskId = this.route.snapshot.paramMap.get('id');
+    if (taskId) {
       this.isNewTask = false;
-      this.taskService.getTask(+id).subscribe((task) => {
+      this.taskService.getTask(Number(taskId)).subscribe((task: Task) => {
         this.task = task;
       });
     }
   }
 
   saveTask(): void {
-    this.task.priority = this.priorityMapReverse[this.task.priority];
-    this.task.status = this.statusMapReverse[this.task.status];
-    
     if (this.isNewTask) {
       this.taskService.createTask(this.task).subscribe(() => {
         this.router.navigate(['/']);
