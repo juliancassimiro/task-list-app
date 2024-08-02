@@ -3,35 +3,47 @@
 </mat-toolbar>
 
 <div class="task-form">
-  <form (ngSubmit)="saveTask()">
+  <form #taskForm="ngForm" (ngSubmit)="saveTask(taskForm)" novalidate>
     <mat-form-field appearance="fill">
       <mat-label>Título</mat-label>
-      <input matInput [(ngModel)]="task.title" name="title" required />
+      <input matInput [(ngModel)]="task.title" name="title" required #title="ngModel" />
+      <mat-error *ngIf="title.invalid && (title.dirty || title.touched)">
+        O título é obrigatório
+      </mat-error>
     </mat-form-field>
 
     <mat-form-field appearance="fill">
       <mat-label>Descrição</mat-label>
-      <textarea matInput [(ngModel)]="task.description" name="description" required></textarea>
+      <textarea matInput [(ngModel)]="task.description" name="description" required #description="ngModel"></textarea>
+      <mat-error *ngIf="description.invalid && (description.dirty || description.touched)">
+        A descrição é obrigatória.
+      </mat-error>
     </mat-form-field>
 
     <mat-form-field appearance="fill">
       <mat-label>Prioridade</mat-label>
-      <mat-select [(ngModel)]="task.priority" name="priority">
+      <mat-select [(ngModel)]="task.priority" name="priority" required #priority="ngModel"> 
         <mat-option *ngFor="let priority of priorities" [value]="priorityMapReverse[priority]">{{ priority }}</mat-option>
       </mat-select>
+      <mat-error *ngIf="priority.invalid && (priority.dirty || priority.touched)">
+        A prioridade é obrigatória.
+      </mat-error>
     </mat-form-field>
 
     <mat-form-field appearance="fill">
       <mat-label>Status</mat-label>
-      <mat-select [(ngModel)]="task.status" name="status">
+      <mat-select [(ngModel)]="task.status" name="status" required #status="ngModel">
         <mat-option *ngFor="let status of statuses" [value]="statusMapReverse[status]">{{ status }}</mat-option>
       </mat-select>
+      <mat-error *ngIf="status.invalid && (status.dirty || status.touched)">
+        O status é obrigatório.
+      </mat-error>
     </mat-form-field>
 
     <div class="form-actions">
       
       <button mat-raised-button color="accent" routerLink="/">Cancelar</button>
-      <button mat-raised-button color="primary" type="submit">Salvar</button>
+      <button mat-raised-button color="primary" type="submit" [disabled]="taskForm.invalid">Salvar</button>
     </div>
   </form>
 </div>

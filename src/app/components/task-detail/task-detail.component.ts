@@ -46,6 +46,7 @@ export class TaskDetailComponent implements OnInit {
   };
 
 
+
   // priorities = Object.values(Priority);
   // statuses = Object.values(Status);
 
@@ -66,7 +67,10 @@ export class TaskDetailComponent implements OnInit {
     }
   }
 
-  saveTask(): void {
+  saveTask(taskForm:any): void {
+    if(taskForm.invalid){
+      return
+    }
     if (this.isNewTask) {
       this.taskService.createTask(this.task).subscribe(() => {
         this.router.navigate(['/']);
